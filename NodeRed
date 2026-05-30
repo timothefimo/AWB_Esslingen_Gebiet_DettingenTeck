@@ -1,0 +1,433 @@
+[
+  {
+    "id": "tab_awb_standalone",
+    "type": "tab",
+    "label": "AWB Esslingen",
+    "disabled": false,
+    "info": "Kompletter AWB Esslingen Müllkalender - holt Daten direkt von awb-es.de ohne ioBroker-Adapter",
+    "env": []
+  },
+  {
+    "id": "ui_tab_awb",
+    "type": "ui_tab",
+    "name": "🗑️ Müll",
+    "icon": "delete",
+    "order": 10,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_group_termine",
+    "type": "ui_group",
+    "name": "Abfuhrtermine",
+    "tab": "ui_tab_awb",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "ui_group_warnung",
+    "type": "ui_group",
+    "name": "⚠️ Heute & Morgen",
+    "tab": "ui_tab_awb",
+    "order": 2,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "ui_group_status",
+    "type": "ui_group",
+    "name": "Status",
+    "tab": "ui_tab_awb",
+    "order": 3,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "awb_trigger_start",
+    "type": "inject",
+    "z": "tab_awb_standalone",
+    "name": "Beim Start",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": true,
+    "onceDelay": 2,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 130,
+    "y": 80,
+    "wires": [
+      [
+        "awb_config"
+      ]
+    ]
+  },
+  {
+    "id": "awb_trigger_cron",
+    "type": "inject",
+    "z": "tab_awb_standalone",
+    "name": "Täglich 06:00 Uhr",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "0 6 * * *",
+    "once": false,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 150,
+    "y": 120,
+    "wires": [
+      [
+        "awb_config"
+      ]
+    ]
+  },
+  {
+    "id": "awb_trigger_manuell",
+    "type": "inject",
+    "z": "tab_awb_standalone",
+    "name": "Manuell aktualisieren",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 160,
+    "y": 160,
+    "wires": [
+      [
+        "awb_config"
+      ]
+    ]
+  },
+  {
+    "id": "awb_config",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "⚙️ KONFIGURATION",
+    "func": "// ============================================================\n// HIER DEINE ADRESSE EINTRAGEN\n// ============================================================\nmsg.awb_city   = 'Dettingen unter Teck';  // Ort\nmsg.awb_street = 'Am Kelterplatz';         // Straße\n\n// Abfalltypen mit exakten ICS-Schlüsselwörtern (AWB Esslingen)\nmsg.awb_types = [\n    { id: 'restmuell',  name: 'Restmüll',    icon: '🗑️', color: '#616161', keywords: ['restmüll', 'restabfall'] },\n    { id: 'biomuell',   name: 'Biomüll',     icon: '🟫', color: '#5D4037', keywords: ['biotonne', 'biomüll'] },\n    { id: 'papier',     name: 'Papier',      icon: '📄', color: '#1565C0', keywords: ['papiertonne', 'papier'] },\n    { id: 'gelberSack', name: 'Gelber Sack', icon: '🟡', color: '#F9A825', keywords: ['gelbe/r sack/tonne', 'gelber sack', 'gelbe tonne'] },\n];\n// ============================================================\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 390,
+    "y": 120,
+    "wires": [
+      [
+        "awb_status_laden",
+        "awb_build_url_node"
+      ]
+    ]
+  },
+  {
+    "id": "awb_status_laden",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "Status: Lade...",
+    "func": "return { payload: '⏳ Lade Abfuhrtermine von awb-es.de ...' };",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 650,
+    "y": 60,
+    "wires": [
+      [
+        "awb_ui_status"
+      ]
+    ]
+  },
+  {
+    "id": "awb_fetch_html",
+    "type": "http request",
+    "z": "tab_awb_standalone",
+    "name": "AWB HTML abrufen",
+    "method": "GET",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124",
+      "Accept-Language": "de-DE,de;q=0.9"
+    },
+    "x": 650,
+    "y": 120,
+    "wires": [
+      [
+        "awb_extract_ics_url"
+      ]
+    ]
+  },
+  {
+    "id": "awb_build_url",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "URL aufbauen",
+    "func": "const city   = encodeURIComponent(msg.awb_city);\nconst street = encodeURIComponent(msg.awb_street);\nmsg.url = `https://www.awb-es.de/abfuhr/abfuhrtermine/__Abfuhrtermine.html?city=${city}&street=${street}&direct=true`;\nnode.warn('Lade: ' + msg.url);\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 420,
+    "y": 200,
+    "wires": [
+      [
+        "awb_fetch_html"
+      ]
+    ]
+  },
+  {
+    "id": "awb_extract_ics_url",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "ICS-URL aus HTML extrahieren",
+    "func": "const html = msg.payload;\n\n// ICS-URL per Regex finden (href mit t=ics oder .ics)\nconst match = html.match(/href=\"([^\"]*(?:t=ics|\\.ics)[^\"]*)\"/i);\n\nif (!match) {\n    node.error('Keine ICS-URL gefunden! Ort/Straße prüfen: ' + msg.awb_city + ' / ' + msg.awb_street);\n    node.send([null, { payload: '❌ Fehler: Keine ICS-URL – Ort/Straße prüfen!' }]);\n    return null;\n}\n\nlet icsUrl = match[1];\nif (!icsUrl.startsWith('http')) {\n    icsUrl = 'https://www.awb-es.de' + (icsUrl.startsWith('/') ? '' : '/') + icsUrl;\n}\n\nnode.warn('ICS-URL: ' + icsUrl);\nmsg.url = icsUrl;\nreturn [msg, null];",
+    "outputs": 2,
+    "noerr": 0,
+    "x": 430,
+    "y": 280,
+    "wires": [
+      [
+        "awb_fetch_ics"
+      ],
+      [
+        "awb_ui_status"
+      ]
+    ]
+  },
+  {
+    "id": "awb_fetch_ics",
+    "type": "http request",
+    "z": "tab_awb_standalone",
+    "name": "ICS-Datei abrufen",
+    "method": "GET",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124"
+    },
+    "x": 660,
+    "y": 280,
+    "wires": [
+      [
+        "awb_parse_ics"
+      ]
+    ]
+  },
+  {
+    "id": "awb_parse_ics",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "ICS parsen & Termine berechnen",
+    "func": "const icsText  = msg.payload;\nconst types    = msg.awb_types;\n\n// ── ICS parsen ─────────────────────────────────────────────\nconst events = [];\nconst lines  = icsText.replace(/\\r\\n/g, '\\n').replace(/\\r/g, '\\n').split('\\n');\nlet inEvent  = false;\nlet current  = {};\n\nfor (const line of lines) {\n    const t = line.trim();\n    if (t === 'BEGIN:VEVENT') { inEvent = true; current = {}; continue; }\n    if (t === 'END:VEVENT') {\n        inEvent = false;\n        if (current.summary && current.date) {\n            // WICHTIG: Datum LOKAL parsen (Fix Zeitzonenproblem UTC vs MESZ)\n            const [y, m, d] = current.date.split('-').map(Number);\n            const localDate  = new Date(y, m - 1, d, 0, 0, 0, 0);\n            events.push({\n                summary: current.summary,\n                date:    current.date,\n                ts:      localDate.getTime(),\n                dateObj: localDate,\n            });\n        }\n        continue;\n    }\n    if (!inEvent) continue;\n    if (t.startsWith('SUMMARY:'))  current.summary = t.substring(8).trim();\n    if (t.startsWith('DTSTART')) {\n        const raw = t.split(':').slice(1).join(':').trim().substring(0, 8);\n        if (/^\\d{8}$/.test(raw)) {\n            current.date = `${raw.substring(0,4)}-${raw.substring(4,6)}-${raw.substring(6,8)}`;\n        }\n    }\n}\nevents.sort((a, b) => a.ts - b.ts);\n\n// ── Nur heutige + zukünftige Termine ──────────────────────\nconst heute   = new Date();\nheute.setHours(0, 0, 0, 0);\nconst heuteTs = heute.getTime();\nconst upcoming = events.filter(e => e.ts >= heuteTs);\n\n// ── Für jeden Typ nächsten Termin finden ──────────────────\nconst result = {};\nfor (const wt of types) {\n    const match = upcoming.find(e =>\n        wt.keywords.some(kw => e.summary.toLowerCase().includes(kw))\n    );\n    if (match) {\n        const tage = Math.round((match.ts - heuteTs) / 86400000);\n        result[wt.id] = {\n            ...wt,\n            termin:  match.dateObj.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' }),\n            tage:    tage,\n            heute:   tage === 0,\n            morgen:  tage === 1,\n            summary: match.summary,\n        };\n    } else {\n        result[wt.id] = { ...wt, termin: 'Kein Termin', tage: -1, heute: false, morgen: false, summary: '' };\n    }\n}\n\nmsg.awb_result  = result;\nmsg.awb_count   = events.length;\nmsg.awb_upcoming = upcoming.length;\n\nnode.warn(`${events.length} Termine geladen, ${upcoming.length} zukünftig`);\nfor (const wt of types) {\n    const r = result[wt.id];\n    node.warn(`${wt.name}: ${r.termin} (${r.tage}d) – ${r.summary}`);\n}\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 430,
+    "y": 380,
+    "wires": [
+      [
+        "awb_build_dashboard",
+        "awb_save_context"
+      ]
+    ]
+  },
+  {
+    "id": "awb_save_context",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "In ioBroker Datenpunkte schreiben (optional)",
+    "func": "// Schreibt die Werte auch in ioBroker-Datenpunkte (0_userdata.0)\n// → Damit können Blockly/JS-Skripte die Werte nutzen\n// → Auskommentieren wenn nicht gewünscht\n\nconst result = msg.awb_result;\nconst msgs   = [];\n\nfor (const [id, r] of Object.entries(result)) {\n    msgs.push({ topic: `0_userdata.0.Muell.${id}.naechsterTermin`, payload: r.termin });\n    msgs.push({ topic: `0_userdata.0.Muell.${id}.tageVerbleibend`, payload: r.tage });\n    msgs.push({ topic: `0_userdata.0.Muell.${id}.abholungHeute`,   payload: r.heute });\n    msgs.push({ topic: `0_userdata.0.Muell.${id}.abholungMorgen`,  payload: r.morgen });\n}\n\n// Jeden State einzeln senden\nfor (const m of msgs) {\n    node.send(m);\n}\nreturn null;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 700,
+    "y": 440,
+    "wires": [
+      [
+        "awb_iobroker_out"
+      ]
+    ]
+  },
+  {
+    "id": "awb_iobroker_out",
+    "type": "ioBroker out",
+    "z": "tab_awb_standalone",
+    "name": "→ ioBroker Datenpunkte",
+    "topic": "",
+    "ack": "true",
+    "autoCreate": "true",
+    "x": 960,
+    "y": 440,
+    "wires": []
+  },
+  {
+    "id": "awb_build_dashboard",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "Dashboard HTML aufbauen",
+    "func": "const result = msg.awb_result;\nconst types  = msg.awb_types;\n\n// ── Termine-Karten ────────────────────────────────────────\nlet cardsHtml = '';\nfor (const wt of types) {\n    const r = result[wt.id];\n    let badge = r.tage >= 0 ? r.tage + 'd' : '?';\n    if (r.tage === 0) badge = 'HEUTE';\n    if (r.tage === 1) badge = 'MORGEN';\n    const badgeColor = r.tage === 0 ? '#c62828' : r.tage === 1 ? '#e65100' : 'rgba(255,255,255,0.3)';\n    const textColor  = (wt.id === 'gelberSack') ? '#333' : 'white';\n\n    cardsHtml += `\n    <div style=\"display:flex;align-items:center;padding:10px 14px;margin:6px 0;border-radius:10px;background:${wt.color};color:${textColor};box-shadow:0 2px 4px rgba(0,0,0,0.2)\">\n        <span style=\"font-size:22px;margin-right:10px\">${wt.icon}</span>\n        <div style=\"flex:1\">\n            <div style=\"font-weight:bold;font-size:13px;opacity:0.9\">${wt.name}</div>\n            <div style=\"font-size:16px\">${r.termin}</div>\n            <div style=\"font-size:12px;opacity:0.85\">${r.tage >= 0 ? 'in ' + r.tage + ' Tag(en)' : ''}</div>\n        </div>\n        <span style=\"padding:3px 8px;border-radius:12px;font-size:12px;font-weight:bold;background:${badgeColor};color:white\">${badge}</span>\n    </div>`;\n}\n\n// ── Warnungen Heute ───────────────────────────────────────\nconst heuteTypes  = types.filter(wt => result[wt.id].heute);\nconst morgenTypes = types.filter(wt => result[wt.id].morgen);\n\nlet warnHtml = '<div style=\"font-size:13px;font-weight:bold;color:#555;text-transform:uppercase;margin-bottom:6px\">🔴 Heute</div>';\nif (heuteTypes.length === 0) {\n    warnHtml += '<div style=\"background:#E8F5E9;color:#2E7D32;padding:10px 14px;border-radius:10px;margin:4px 0\">✅ Heute keine Abholung</div>';\n} else {\n    for (const wt of heuteTypes) {\n        warnHtml += `<div style=\"background:#FFEBEE;color:#B71C1C;padding:10px 14px;border-radius:10px;margin:4px 0;font-weight:bold\">🚨 ${wt.name} wird HEUTE abgeholt!</div>`;\n    }\n}\n\nwarnHtml += '<div style=\"font-size:13px;font-weight:bold;color:#555;text-transform:uppercase;margin:14px 0 6px\">🟡 Morgen</div>';\nif (morgenTypes.length === 0) {\n    warnHtml += '<div style=\"background:#E8F5E9;color:#2E7D32;padding:10px 14px;border-radius:10px;margin:4px 0\">✅ Morgen keine Abholung</div>';\n} else {\n    for (const wt of morgenTypes) {\n        warnHtml += `<div style=\"background:#FFF8E1;color:#E65100;padding:10px 14px;border-radius:10px;margin:4px 0\">⚠️ ${wt.name} wird morgen abgeholt!</div>`;\n    }\n}\n\n// ── Status ────────────────────────────────────────────────\nconst jetzt  = new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' });\nconst status = `✅ OK – ${msg.awb_count} Termine geladen | Aktualisiert: ${jetzt}`;\n\nmsg.payload_cards  = cardsHtml;\nmsg.payload_warn   = warnHtml;\nmsg.payload_status = status;\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 430,
+    "y": 500,
+    "wires": [
+      [
+        "awb_out_cards",
+        "awb_out_warn",
+        "awb_out_status_ok"
+      ]
+    ]
+  },
+  {
+    "id": "awb_out_cards",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "→ Termine",
+    "func": "msg.payload = msg.payload_cards;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 700,
+    "y": 540,
+    "wires": [
+      [
+        "awb_ui_termine"
+      ]
+    ]
+  },
+  {
+    "id": "awb_out_warn",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "→ Warnungen",
+    "func": "msg.payload = msg.payload_warn;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 710,
+    "y": 580,
+    "wires": [
+      [
+        "awb_ui_warnung"
+      ]
+    ]
+  },
+  {
+    "id": "awb_out_status_ok",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "→ Status OK",
+    "func": "msg.payload = msg.payload_status;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 710,
+    "y": 620,
+    "wires": [
+      [
+        "awb_ui_status"
+      ]
+    ]
+  },
+  {
+    "id": "awb_ui_termine",
+    "type": "ui_template",
+    "z": "tab_awb_standalone",
+    "group": "ui_group_termine",
+    "name": "Termine Karten",
+    "order": 1,
+    "width": "6",
+    "height": "7",
+    "format": "<div ng-bind-html=\"msg.payload\"></div>",
+    "storeOutMessages": true,
+    "fwdInMessages": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 960,
+    "y": 540,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "awb_ui_warnung",
+    "type": "ui_template",
+    "z": "tab_awb_standalone",
+    "group": "ui_group_warnung",
+    "name": "Heute & Morgen",
+    "order": 1,
+    "width": "6",
+    "height": "7",
+    "format": "<div ng-bind-html=\"msg.payload\"></div>",
+    "storeOutMessages": true,
+    "fwdInMessages": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 960,
+    "y": 580,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "awb_ui_status",
+    "type": "ui_text",
+    "z": "tab_awb_standalone",
+    "group": "ui_group_status",
+    "order": 1,
+    "width": "6",
+    "height": "1",
+    "name": "Status",
+    "label": "",
+    "format": "{{msg.payload}}",
+    "layout": "row-left",
+    "style": false,
+    "font": "",
+    "fontSize": 13,
+    "color": "#ffffff",
+    "className": "",
+    "x": 960,
+    "y": 620,
+    "wires": []
+  },
+  {
+    "id": "awb_build_url_node",
+    "type": "function",
+    "z": "tab_awb_standalone",
+    "name": "URL für HTTP-Request setzen",
+    "func": "const city   = encodeURIComponent(msg.awb_city);\nconst street = encodeURIComponent(msg.awb_street);\nmsg.url = `https://www.awb-es.de/abfuhr/abfuhrtermine/__Abfuhrtermine.html?city=${city}&street=${street}&direct=true`;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 650,
+    "y": 180,
+    "wires": [
+      [
+        "awb_fetch_html"
+      ]
+    ]
+  }
+]
