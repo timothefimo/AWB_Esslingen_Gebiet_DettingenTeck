@@ -1,0 +1,128 @@
+[
+  {
+    "id": "tab_muell_001",
+    "type": "tab",
+    "label": "Müllkalender",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "ui_tab_muell",
+    "type": "ui_tab",
+    "name": "🗑️ Müll",
+    "icon": "delete",
+    "order": 99,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_group_muell_termine",
+    "type": "ui_group",
+    "name": "Abfuhrtermine",
+    "tab": "ui_tab_muell",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "ui_group_muell_warnung",
+    "type": "ui_group",
+    "name": "⚠️ Heute & Morgen",
+    "tab": "ui_tab_muell",
+    "order": 2,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "ui_group_muell_status",
+    "type": "ui_group",
+    "name": "Adapter Status",
+    "tab": "ui_tab_muell",
+    "order": 3,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+
+  {
+    "id": "muell_main_template",
+    "type": "ui_template",
+    "z": "tab_muell_001",
+    "group": "ui_group_muell_termine",
+    "name": "Termine Übersicht",
+    "order": 1,
+    "width": "6",
+    "height": "6",
+    "format": "<style>\n.muell-card {\n  display: flex;\n  align-items: center;\n  padding: 10px 14px;\n  margin: 6px 0;\n  border-radius: 10px;\n  font-size: 15px;\n  font-weight: 500;\n  color: white;\n  box-shadow: 0 2px 4px rgba(0,0,0,0.2);\n}\n.muell-icon { font-size: 22px; margin-right: 10px; }\n.muell-info { flex: 1; }\n.muell-name { font-weight: bold; font-size: 14px; opacity: 0.9; }\n.muell-datum { font-size: 16px; }\n.muell-tage { font-size: 12px; opacity: 0.85; margin-top: 2px; }\n.muell-badge {\n  padding: 3px 8px;\n  border-radius: 12px;\n  font-size: 12px;\n  font-weight: bold;\n  background: rgba(255,255,255,0.3);\n}\n</style>\n<div>\n  <div class=\"muell-card\" style=\"background:#616161\">\n    <span class=\"muell-icon\">🗑️</span>\n    <div class=\"muell-info\">\n      <div class=\"muell-name\">Restmüll</div>\n      <div class=\"muell-datum\">{{msg.restmuell_termin || '...'}}</div>\n      <div class=\"muell-tage\">in {{msg.restmuell_tage >= 0 ? msg.restmuell_tage : '?'}} Tagen</div>\n    </div>\n    <span class=\"muell-badge\">{{msg.restmuell_tage === 0 ? 'HEUTE' : msg.restmuell_tage === 1 ? 'MORGEN' : msg.restmuell_tage + 'd'}}</span>\n  </div>\n\n  <div class=\"muell-card\" style=\"background:#5D4037\">\n    <span class=\"muell-icon\">🟫</span>\n    <div class=\"muell-info\">\n      <div class=\"muell-name\">Biomüll</div>\n      <div class=\"muell-datum\">{{msg.biomuell_termin || '...'}}</div>\n      <div class=\"muell-tage\">in {{msg.biomuell_tage >= 0 ? msg.biomuell_tage : '?'}} Tagen</div>\n    </div>\n    <span class=\"muell-badge\">{{msg.biomuell_tage === 0 ? 'HEUTE' : msg.biomuell_tage === 1 ? 'MORGEN' : msg.biomuell_tage + 'd'}}</span>\n  </div>\n\n  <div class=\"muell-card\" style=\"background:#1565C0\">\n    <span class=\"muell-icon\">📄</span>\n    <div class=\"muell-info\">\n      <div class=\"muell-name\">Papier</div>\n      <div class=\"muell-datum\">{{msg.papier_termin || '...'}}</div>\n      <div class=\"muell-tage\">in {{msg.papier_tage >= 0 ? msg.papier_tage : '?'}} Tagen</div>\n    </div>\n    <span class=\"muell-badge\">{{msg.papier_tage === 0 ? 'HEUTE' : msg.papier_tage === 1 ? 'MORGEN' : msg.papier_tage + 'd'}}</span>\n  </div>\n\n  <div class=\"muell-card\" style=\"background:#F9A825\">\n    <span class=\"muell-icon\">🟡</span>\n    <div class=\"muell-info\">\n      <div class=\"muell-name\">Gelber Sack</div>\n      <div class=\"muell-datum\">{{msg.gelb_termin || '...'}}</div>\n      <div class=\"muell-tage\">in {{msg.gelb_tage >= 0 ? msg.gelb_tage : '?'}} Tagen</div>\n    </div>\n    <span class=\"muell-badge\" style=\"color:#333\">{{msg.gelb_tage === 0 ? 'HEUTE' : msg.gelb_tage === 1 ? 'MORGEN' : msg.gelb_tage + 'd'}}</span>\n  </div>\n</div>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 750,
+    "y": 200,
+    "wires": [[]]
+  },
+
+  {
+    "id": "muell_warnung_template",
+    "type": "ui_template",
+    "z": "tab_muell_001",
+    "group": "ui_group_muell_warnung",
+    "name": "Warnungen Heute & Morgen",
+    "order": 1,
+    "width": "6",
+    "height": "6",
+    "format": "<style>\n.warn-card {\n  display: flex;\n  align-items: center;\n  padding: 10px 14px;\n  margin: 6px 0;\n  border-radius: 10px;\n  font-size: 14px;\n  font-weight: 500;\n  box-shadow: 0 2px 4px rgba(0,0,0,0.15);\n}\n.warn-ok { background: #E8F5E9; color: #2E7D32; }\n.warn-heute { background: #FFEBEE; color: #B71C1C; font-weight: bold; }\n.warn-morgen { background: #FFF8E1; color: #E65100; }\n.warn-section { font-size: 13px; font-weight: bold; color: #555; margin: 8px 0 4px 0; text-transform: uppercase; }\n</style>\n<div>\n  <div class=\"warn-section\">🔴 Heute</div>\n  <div ng-if=\"!msg.heute_restmuell && !msg.heute_biomuell && !msg.heute_papier && !msg.heute_gelb\" class=\"warn-card warn-ok\">✅ Heute keine Abholung</div>\n  <div ng-if=\"msg.heute_restmuell\" class=\"warn-card warn-heute\">🚨 Restmüll wird HEUTE abgeholt!</div>\n  <div ng-if=\"msg.heute_biomuell\" class=\"warn-card warn-heute\">🚨 Biomüll wird HEUTE abgeholt!</div>\n  <div ng-if=\"msg.heute_papier\" class=\"warn-card warn-heute\">🚨 Papier wird HEUTE abgeholt!</div>\n  <div ng-if=\"msg.heute_gelb\" class=\"warn-card warn-heute\">🚨 Gelber Sack wird HEUTE abgeholt!</div>\n\n  <div class=\"warn-section\" style=\"margin-top:16px\">🟡 Morgen</div>\n  <div ng-if=\"!msg.morgen_restmuell && !msg.morgen_biomuell && !msg.morgen_papier && !msg.morgen_gelb\" class=\"warn-card warn-ok\">✅ Morgen keine Abholung</div>\n  <div ng-if=\"msg.morgen_restmuell\" class=\"warn-card warn-morgen\">⚠️ Restmüll wird morgen abgeholt!</div>\n  <div ng-if=\"msg.morgen_biomuell\" class=\"warn-card warn-morgen\">⚠️ Biomüll wird morgen abgeholt!</div>\n  <div ng-if=\"msg.morgen_papier\" class=\"warn-card warn-morgen\">⚠️ Papier wird morgen abgeholt!</div>\n  <div ng-if=\"msg.morgen_gelb\" class=\"warn-card warn-morgen\">⚠️ Gelber Sack wird morgen abgeholt!</div>\n</div>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 750,
+    "y": 500,
+    "wires": [[]]
+  },
+
+  {
+    "id": "muell_collector",
+    "type": "function",
+    "z": "tab_muell_001",
+    "name": "Daten sammeln & zusammenführen",
+    "func": "// Alle Datenpunkte in flow-context sammeln\nconst ctx = flow.get('muell') || {};\nconst topic = msg.topic || '';\n\nif (topic.includes('restmuell')) {\n    if (topic.includes('naechsterTermin') && !topic.includes('TS')) ctx.restmuell_termin = msg.payload;\n    if (topic.includes('tageVerbleibend'))  ctx.restmuell_tage   = msg.payload;\n    if (topic.includes('abholungHeute'))    ctx.heute_restmuell  = msg.payload;\n    if (topic.includes('abholungMorgen'))   ctx.morgen_restmuell = msg.payload;\n} else if (topic.includes('biomuell')) {\n    if (topic.includes('naechsterTermin') && !topic.includes('TS')) ctx.biomuell_termin = msg.payload;\n    if (topic.includes('tageVerbleibend'))  ctx.biomuell_tage   = msg.payload;\n    if (topic.includes('abholungHeute'))    ctx.heute_biomuell  = msg.payload;\n    if (topic.includes('abholungMorgen'))   ctx.morgen_biomuell = msg.payload;\n} else if (topic.includes('papier')) {\n    if (topic.includes('naechsterTermin') && !topic.includes('TS')) ctx.papier_termin = msg.payload;\n    if (topic.includes('tageVerbleibend'))  ctx.papier_tage   = msg.payload;\n    if (topic.includes('abholungHeute'))    ctx.heute_papier  = msg.payload;\n    if (topic.includes('abholungMorgen'))   ctx.morgen_papier = msg.payload;\n} else if (topic.includes('gelberSack')) {\n    if (topic.includes('naechsterTermin') && !topic.includes('TS')) ctx.gelb_termin = msg.payload;\n    if (topic.includes('tageVerbleibend'))  ctx.gelb_tage   = msg.payload;\n    if (topic.includes('abholungHeute'))    ctx.heute_gelb  = msg.payload;\n    if (topic.includes('abholungMorgen'))   ctx.morgen_gelb = msg.payload;\n}\n\nflow.set('muell', ctx);\n\n// Immer aktuellen Stand ausgeben\nreturn { payload: ctx, ...ctx };",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 510,
+    "y": 350,
+    "wires": [["muell_main_template", "muell_warnung_template"]]
+  },
+
+  { "id": "in_rest_termin",  "type": "ioBroker in", "z": "tab_muell_001", "name": "Restmüll Termin",       "attrname": "payload", "topic": "awb-esslingen.0.type.restmuell.naechsterTermin",   "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 120, "wires": [["muell_collector"]] },
+  { "id": "in_rest_tage",    "type": "ioBroker in", "z": "tab_muell_001", "name": "Restmüll Tage",         "attrname": "payload", "topic": "awb-esslingen.0.type.restmuell.tageVerbleibend",   "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 160, "wires": [["muell_collector"]] },
+  { "id": "in_rest_heute",   "type": "ioBroker in", "z": "tab_muell_001", "name": "Restmüll heute",        "attrname": "payload", "topic": "awb-esslingen.0.type.restmuell.abholungHeute",     "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 200, "wires": [["muell_collector"]] },
+  { "id": "in_rest_morgen",  "type": "ioBroker in", "z": "tab_muell_001", "name": "Restmüll morgen",       "attrname": "payload", "topic": "awb-esslingen.0.type.restmuell.abholungMorgen",    "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 240, "wires": [["muell_collector"]] },
+
+  { "id": "in_bio_termin",   "type": "ioBroker in", "z": "tab_muell_001", "name": "Biomüll Termin",        "attrname": "payload", "topic": "awb-esslingen.0.type.biomuell.naechsterTermin",    "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 300, "wires": [["muell_collector"]] },
+  { "id": "in_bio_tage",     "type": "ioBroker in", "z": "tab_muell_001", "name": "Biomüll Tage",          "attrname": "payload", "topic": "awb-esslingen.0.type.biomuell.tageVerbleibend",    "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 340, "wires": [["muell_collector"]] },
+  { "id": "in_bio_heute",    "type": "ioBroker in", "z": "tab_muell_001", "name": "Biomüll heute",         "attrname": "payload", "topic": "awb-esslingen.0.type.biomuell.abholungHeute",      "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 380, "wires": [["muell_collector"]] },
+  { "id": "in_bio_morgen",   "type": "ioBroker in", "z": "tab_muell_001", "name": "Biomüll morgen",        "attrname": "payload", "topic": "awb-esslingen.0.type.biomuell.abholungMorgen",     "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 420, "wires": [["muell_collector"]] },
+
+  { "id": "in_pap_termin",   "type": "ioBroker in", "z": "tab_muell_001", "name": "Papier Termin",         "attrname": "payload", "topic": "awb-esslingen.0.type.papier.naechsterTermin",      "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 480, "wires": [["muell_collector"]] },
+  { "id": "in_pap_tage",     "type": "ioBroker in", "z": "tab_muell_001", "name": "Papier Tage",           "attrname": "payload", "topic": "awb-esslingen.0.type.papier.tageVerbleibend",      "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 520, "wires": [["muell_collector"]] },
+  { "id": "in_pap_heute",    "type": "ioBroker in", "z": "tab_muell_001", "name": "Papier heute",          "attrname": "payload", "topic": "awb-esslingen.0.type.papier.abholungHeute",        "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 560, "wires": [["muell_collector"]] },
+  { "id": "in_pap_morgen",   "type": "ioBroker in", "z": "tab_muell_001", "name": "Papier morgen",         "attrname": "payload", "topic": "awb-esslingen.0.type.papier.abholungMorgen",       "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 150, "y": 600, "wires": [["muell_collector"]] },
+
+  { "id": "in_gelb_termin",  "type": "ioBroker in", "z": "tab_muell_001", "name": "Gelber Sack Termin",    "attrname": "payload", "topic": "awb-esslingen.0.type.gelberSack.naechsterTermin",  "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 160, "y": 660, "wires": [["muell_collector"]] },
+  { "id": "in_gelb_tage",    "type": "ioBroker in", "z": "tab_muell_001", "name": "Gelber Sack Tage",      "attrname": "payload", "topic": "awb-esslingen.0.type.gelberSack.tageVerbleibend",  "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 160, "y": 700, "wires": [["muell_collector"]] },
+  { "id": "in_gelb_heute",   "type": "ioBroker in", "z": "tab_muell_001", "name": "Gelber Sack heute",     "attrname": "payload", "topic": "awb-esslingen.0.type.gelberSack.abholungHeute",    "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 160, "y": 740, "wires": [["muell_collector"]] },
+  { "id": "in_gelb_morgen",  "type": "ioBroker in", "z": "tab_muell_001", "name": "Gelber Sack morgen",    "attrname": "payload", "topic": "awb-esslingen.0.type.gelberSack.abholungMorgen",   "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 160, "y": 780, "wires": [["muell_collector"]] },
+
+  { "id": "in_status",       "type": "ioBroker in", "z": "tab_muell_001", "name": "Status",                "attrname": "payload", "topic": "awb-esslingen.0.info.status",                      "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 130, "y": 880, "wires": [["ui_status"]] },
+  { "id": "in_lastupdate",   "type": "ioBroker in", "z": "tab_muell_001", "name": "Letzte Aktualisierung", "attrname": "payload", "topic": "awb-esslingen.0.info.lastUpdate",                  "payloadType": "value", "onlyack": "", "func": "all", "gap": "", "fireOnStart": "true", "outFormat": "MQTT", "x": 160, "y": 920, "wires": [["ui_lastupdate"]] },
+
+  { "id": "ui_status",       "type": "ui_text", "z": "tab_muell_001", "group": "ui_group_muell_status", "order": 1, "width": "6", "height": "1", "name": "Status",                "label": "Status: ",      "format": "{{msg.payload}}", "layout": "row-left", "style": false, "font": "", "fontSize": 14, "color": "#ffffff", "className": "", "x": 450, "y": 880, "wires": [] },
+  { "id": "ui_lastupdate",   "type": "ui_text", "z": "tab_muell_001", "group": "ui_group_muell_status", "order": 2, "width": "6", "height": "1", "name": "Letzte Aktualisierung", "label": "Aktualisiert: ", "format": "{{msg.payload}}", "layout": "row-left", "style": false, "font": "", "fontSize": 14, "color": "#ffffff", "className": "", "x": 480, "y": 920, "wires": [] }
+]
