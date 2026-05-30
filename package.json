@@ -1,0 +1,46 @@
+{
+  "name": "iobroker.awb-es",
+  "version": "0.1.0",
+  "description": "Müllkalender für den Abfallwirtschaftsbetrieb des Landkreises Esslingen (AWB-ES)",
+  "author": {
+    "name": "Dein Name",
+    "email": "deine@email.de"
+  },
+  "homepage": "https://github.com/timothefimo/AWB_Esslingen_Gebiet_DettingenTeck",
+  "license": "MIT",
+  "main": "main.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "echo \"No tests configured\" && exit 0",
+    "lint": "echo \"No linting configured\""
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.1.4",
+    "axios": "^1.7.2",
+    "node-html-parser": "^6.1.13"
+  },
+  "devDependencies": {
+    "@iobroker/testing": "^4.1.3"
+  },
+  "keywords": [
+    "ioBroker",
+    "Smart Home",
+    "home automation",
+    "Müll",
+    "Müllabfuhr",
+    "Müllkalender",
+    "AWB",
+    "Esslingen",
+    "Abfall",
+    "Abfallkalender"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timothefimo/AWB_Esslingen_Gebiet_DettingenTeck"
+  },
+  "bugs": {
+    "url": "https://github.com/timothefimo/AWB_Esslingen_Gebiet_DettingenTeck"
+  }
+}

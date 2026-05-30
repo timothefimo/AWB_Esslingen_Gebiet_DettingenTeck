@@ -1,0 +1,142 @@
+{
+  "i18n": true,
+  "type": "tabs",
+  "items": {
+    "_tabEinstellungen": {
+      "type": "panel",
+      "label": "Einstellungen",
+      "items": {
+        "_headerAdresse": {
+          "type": "header",
+          "text": "Adresse"
+        },
+        "city": {
+          "type": "text",
+          "label": "Ort",
+          "help": "Genau wie auf awb-es.de, z.B. 'Dettingen unter Teck'",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "xl": 6,
+          "trim": true,
+          "validator": "data.city && data.city.trim().length > 0",
+          "validatorErrorText": "Bitte einen Ort eingeben"
+        },
+        "street": {
+          "type": "text",
+          "label": "Straße",
+          "help": "Genau wie auf awb-es.de, z.B. 'Am Kelterplatz'",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "xl": 6,
+          "trim": true,
+          "newLine": false,
+          "validator": "data.street && data.street.trim().length > 0",
+          "validatorErrorText": "Bitte eine Straße eingeben"
+        },
+        "_headerHinweis": {
+          "type": "staticText",
+          "newLine": true,
+          "text": "💡 Tipp: Den genauen Straßennamen findest du auf https://www.awb-es.de/abfuhr/abfuhrtermine/ – gib dort deinen Ort ein und wähle die Straße aus dem Dropdown.",
+          "style": {
+            "backgroundColor": "#e8f4f8",
+            "padding": "8px",
+            "borderRadius": "4px",
+            "marginTop": "8px"
+          }
+        },
+        "_headerIntervall": {
+          "type": "header",
+          "text": "Aktualisierung",
+          "newLine": true
+        },
+        "updateInterval": {
+          "type": "number",
+          "label": "Aktualisierungsintervall (Stunden)",
+          "help": "Wie oft die Daten von AWB abgerufen werden",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "default": 6,
+          "xs": 12,
+          "sm": 6,
+          "md": 4,
+          "lg": 3,
+          "xl": 3
+        }
+      }
+    },
+    "_tabAbfalltypen": {
+      "type": "panel",
+      "label": "Abfalltypen",
+      "items": {
+        "_hinweis": {
+          "type": "staticText",
+          "text": "Hier kannst du die Abfalltypen konfigurieren. Die Schlüsselwörter werden im ICS-Kalender gesucht (Großschreibung egal, kommagetrennt).",
+          "style": {
+            "backgroundColor": "#e8f4f8",
+            "padding": "8px",
+            "borderRadius": "4px",
+            "marginBottom": "12px"
+          }
+        },
+        "wasteTypes": {
+          "type": "table",
+          "label": "Abfalltypen",
+          "showSecondAddAt": 5,
+          "items": {
+            "name": {
+              "type": "text",
+              "label": "Name",
+              "width": "20%"
+            },
+            "id": {
+              "type": "text",
+              "label": "ID (Datenpunkt-Name, keine Sonderzeichen)",
+              "width": "20%"
+            },
+            "keywords": {
+              "type": "text",
+              "label": "Schlüsselwörter (kommagetrennt)",
+              "width": "45%"
+            },
+            "color": {
+              "type": "color",
+              "label": "Farbe",
+              "width": "15%"
+            }
+          },
+          "default": [
+            {
+              "name": "Restmüll",
+              "id": "restmuell",
+              "keywords": "Restmüll,Restabfall,Graue Tonne",
+              "color": "#808080"
+            },
+            {
+              "name": "Biomüll",
+              "id": "biomuell",
+              "keywords": "Biomüll,Biotonne,Braune Tonne,Bio",
+              "color": "#8B4513"
+            },
+            {
+              "name": "Papier",
+              "id": "papier",
+              "keywords": "Papier,Papiertonne,Blaue Tonne",
+              "color": "#0000FF"
+            },
+            {
+              "name": "Gelber Sack",
+              "id": "gelberSack",
+              "keywords": "Gelber Sack,Gelbe Tonne,Leichtverpackung,LVP",
+              "color": "#FFD700"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

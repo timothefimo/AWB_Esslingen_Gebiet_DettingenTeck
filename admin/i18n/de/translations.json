@@ -1,0 +1,13 @@
+{
+  "Einstellungen": "Einstellungen",
+  "Abfalltypen":   "Abfalltypen",
+  "Adresse":       "Adresse",
+  "Ort":           "Ort",
+  "Straße":        "Straße",
+  "Aktualisierung": "Aktualisierung",
+  "Aktualisierungsintervall (Stunden)": "Aktualisierungsintervall (Stunden)",
+  "Name":          "Name",
+  "ID (Datenpunkt-Name, keine Sonderzeichen)": "ID (Datenpunkt-Name, keine Sonderzeichen)",
+  "Schlüsselwörter (kommagetrennt)": "Schlüsselwörter (kommagetrennt)",
+  "Farbe":         "Farbe"
+}

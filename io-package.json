@@ -1,0 +1,92 @@
+{
+  "common": {
+    "name": "awb-es",
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "Initial release",
+        "de": "Erstveröffentlichung"
+      }
+    },
+    "title": "AWB Esslingen",
+    "titleLang": {
+      "en": "AWB Esslingen Waste Calendar",
+      "de": "AWB Esslingen Müllkalender"
+    },
+    "desc": {
+      "en": "Fetches waste collection dates from the Abfallwirtschaftsbetrieb des Landkreises Esslingen (AWB-ES)",
+      "de": "Ruft die Abfuhrtermine vom Abfallwirtschaftsbetrieb des Landkreises Esslingen (AWB-ES) ab"
+    },
+    "authors": [
+      "Dein Name <deine@email.de>"
+    ],
+    "keywords": [
+      "ioBroker",
+      "Müll",
+      "Müllabfuhr",
+      "AWB",
+      "Esslingen",
+      "Abfall",
+      "Abfallkalender"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "admin/awb-es.png",
+    "extIcon": "https://raw.githubusercontent.com/timothefimo/AWB_Esslingen_Gebiet_DettingenTeck/main/admin/awb-es.png",
+    "enabled": true,
+    "readme": "https://github.com/timothefimo/AWB_Esslingen_Gebiet_DettingenTeck/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "schedule": "0 6 * * *",
+    "type": "general",
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "allowInit": true,
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.0"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.0.0"
+      }
+    ]
+  },
+  "native": {
+    "city": "Dettingen unter Teck",
+    "street": "",
+    "updateInterval": 6,
+    "wasteTypes": [
+      {
+        "name": "Restmüll",
+        "id": "restmuell",
+        "keywords": "Restmüll,Restabfall,Graue Tonne",
+        "color": "#808080"
+      },
+      {
+        "name": "Biomüll",
+        "id": "biomuell",
+        "keywords": "Biomüll,Biotonne,Braune Tonne,Bio",
+        "color": "#8B4513"
+      },
+      {
+        "name": "Papier",
+        "id": "papier",
+        "keywords": "Papier,Papiertonne,Blaue Tonne",
+        "color": "#0000FF"
+      },
+      {
+        "name": "Gelber Sack",
+        "id": "gelberSack",
+        "keywords": "Gelber Sack,Gelbe Tonne,Leichtverpackung,LVP",
+        "color": "#FFD700"
+      }
+    ]
+  },
+  "objects": []
+}

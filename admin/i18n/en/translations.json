@@ -1,0 +1,13 @@
+{
+  "Einstellungen": "Settings",
+  "Abfalltypen":   "Waste Types",
+  "Adresse":       "Address",
+  "Ort":           "City",
+  "Straße":        "Street",
+  "Aktualisierung": "Update",
+  "Aktualisierungsintervall (Stunden)": "Update interval (hours)",
+  "Name":          "Name",
+  "ID (Datenpunkt-Name, keine Sonderzeichen)": "ID (data point name, no special characters)",
+  "Schlüsselwörter (kommagetrennt)": "Keywords (comma separated)",
+  "Farbe":         "Color"
+}
