@@ -38,28 +38,32 @@
         "wasteTypes": {
           "type": "table",
           "label": "Abfalltypen",
-          "items": {
-            "name": {
+          "items": [
+            {
               "type": "text",
-              "label": "Name",
+              "attr": "name",
+              "title": "Name",
               "width": "20%"
             },
-            "id": {
+            {
               "type": "text",
-              "label": "ID",
+              "attr": "id",
+              "title": "ID",
               "width": "20%"
             },
-            "keywords": {
+            {
               "type": "text",
-              "label": "Schlüsselwörter (kommagetrennt)",
+              "attr": "keywords",
+              "title": "Schlüsselwörter (kommagetrennt)",
               "width": "50%"
             },
-            "color": {
+            {
               "type": "color",
-              "label": "Farbe",
+              "attr": "color",
+              "title": "Farbe",
               "width": "10%"
             }
-          },
+          ],
           "default": [
             {
               "name": "Restmüll",
